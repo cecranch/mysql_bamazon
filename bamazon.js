@@ -23,10 +23,10 @@ const mysql = require('mysql')
 
 // establish database connection first
 const connection = mysql.createConnection({
-    host: 'localhost',
+    host: '',
     port: 3306,
     user: 'root',
-    password: 'Christmas1',
+    password: '',
     database: 'bamazon'
     })
 
