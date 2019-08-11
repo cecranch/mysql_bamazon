@@ -13,6 +13,15 @@ CREATE TABLE products
    primary key (item_id)
 );
 
+INSERT INTO products (product_name, department_name, price, stock_quantity)
+VALUES ("pillow", "home", 2.50, 20), ("pillow", "home", 2.50, 20), ("pillow", "home", 2.50, 20),
+("strawberry", 3.25, 75, 15), ("strawberry", 3.25, 75, 7), ("pillow", "home", 2.50, 20), 
+("pillow", "home", 2.50, 20), ("pillow", "home", 2.50, 20), ("pillow", "home", 2.50, 20), 
+("pillow", "home", 2.50, 9);
+
+
+
+
 
 SELECT *
 FROM products;
