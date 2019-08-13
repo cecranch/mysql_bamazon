@@ -34,13 +34,13 @@ connection.connect();
 console.log("Connected");
 
 var display = function() {
-        connection.query("SELECT * FROM products", function (err, res) {
+        connection.query("SELECT * FROM products", function(err, res) {
           if (err) throw err;
+          console.log("");
           console.log("Connect to Bamazon and start shopping!");
           console.log(res);
         })
-    };
-
+    
 var results = [];
 for (var i = 0; i < res.length; i++) {
     results.push([res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quantity]);
@@ -49,7 +49,7 @@ for (var i = 0; i < res.length; i++) {
 console.log(results.toString()); 
 console.log("");
 shop();
-
+};
 
 // Prompt 1 - ask user the ID of the product they would like to buy.
 
@@ -66,12 +66,12 @@ var shop = function () {
                 if (err) throw err;
                 if (res.length === 0) {
                     console.log("Product does not exist. Please re-enter Product ID");
-                }
-        }) 
-    }
-
-else {
-  inquirer.prompt({
+                
+    // run shop function again    
+    shop();}
+    
+    else {
+      inquirer.prompt({
       name: "number",
       type: "input",
       message: "How many items would you like to purchase?"
@@ -84,6 +84,35 @@ else {
             res[0].stock_quantity +
             " items left of this product"
         );
-        
+        shop();
+              } else {
+                console.log("");
+                console.log("- - - - - - - - - - - - - - - - - - - - ");
+                console.log(res[0].product_name + " purchased");
+                console.log(number + "  @ $" + res[0].price);
+                console.log("Total Amount = $" + number * res[0].price)
+                console.log("- - - - - - - - - - - - - - - - - - - - ");
+// updates with new quantity once customer makes a purchase 
+                var newQuantity = res[0].stock_quantity - number;
+                connection.query(
+                  "UPDATE products SET stock_quantity = " +
+                    newQuantity +
+                    " WHERE item_id = " + res[0].item_id,
+                  function(err, resUpdate) {
+                    if (err) throw err;
+                    console.log("");
+                    console.log("Your order has been received. Thank you for shopping with us!");
+                    console.log("");
+                    console.log("New Stock for " + res[0].product_name + " is " + newQuantity); 
+                    console.log("");
+                    connection.end();
+                }
+                );
+              }
+            });
+        }
+      });
+    });
+};
     
 display();
